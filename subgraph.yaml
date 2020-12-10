@@ -1,0 +1,39 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: Spectre
+    network: mainnet
+    source:
+      address: "0x12B306fA98F4CbB8d4457FdFf3a0A0a56f07cCdf"
+      abi: Spectre
+      startBlock: 4715755 
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - WalletAddressesSet
+        - OwnershipTransferred
+        - ClaimedTokens
+        - Transfer
+        - NewCloneToken
+        - Approval
+      abis:
+        - name: Spectre
+          file: ./abis/Spectre.json
+      eventHandlers:
+        - event: WalletAddressesSet(address,address,address)
+          handler: handleWalletAddressesSet
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: ClaimedTokens(indexed address,indexed address,uint256)
+          handler: handleClaimedTokens
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+        - event: NewCloneToken(indexed address,uint256)
+          handler: handleNewCloneToken
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleApproval
+      file: ./src/mapping.ts
